@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <script src="../vue3.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="counter += 100">Add 1</button>
+        <p>点击次数： {{ counter }} </p>
+        <button @click="clickMe">click me</button>
+        <br><br>
+        <button v-if="active<all" @click="clear">清理</button>
+        <input type="text" name="双向绑定" id="" v-model="title" @keydown.enter="addTodo">
+        {{title}}
+        <ul>
+            <li v-for="todo in todolist">
+                <input type="checkbox" name="" id="" v-model="todo.done">
+                <span :class="{done:todo.done}">{{ todo.title }}</span>
+                
+            </li>
+        </ul>
+        <div>
+            全选<input type="checkbox"  v-model="allDone">
+            <span>{{active}} / {{all}}</span>
+        </div>
+    </div>
+    <script language="">
+        const App = {
+            data() {
+                return {
+                    counter: 0,
+                    title: "hhsdasf",
+                    todolist: [
+                        {title: "香蕉",done: false},
+                        {title: "苹果",done: true},
+                    ]
+                }
+            },
+            methods: {
+                clickMe () {
+                    this.counter += 1
+                },
+                addTodo () {
+                    this.todolist.push({
+                        title: this.title,
+                        done: false
+                    })
+                    this.title = ''
+                },
+                clear() {
+                    this.todolist = this.todolist.filter(v=>!v.done)
+                }
+            },
+            computed: {
+                active() {
+                    return this.todolist.filter(v=>!v.done).length
+                },
+                all() {
+                    return this.todolist.length
+                },
+                allDone: {
+                    get: function () {
+                        return this.active === 0
+                    },
+                    set: function(val){
+                        this.todolist.forEach(todo=>{ 
+                            todo.done = val
+                        });
+
+                    }
+                }
+            }
+            
+        }
+
+        Vue.createApp(App).mount('#app')
+    </script>
+    <style>
+        .done{
+            color: gray;
+            text-decoration: line-through;
+        }
+    </style>
+</body>
+
+</html>
